@@ -27,11 +27,13 @@ switch(strtoupper($mode)) {
 
         $users = array();
 
+
         foreach ($user->getlist() as $values) {
             $values["options"] = htmltool::linkicon("?mode=edit&id=".$values["id"], "edit", ["id" => 3]) .
                                     htmltool::linkicon("?mode=details&id=".$values["id"], "eye") .
                                     htmltool::linkicon("?mode=delete&id=".$values["id"], "trash-alt");
 
+            $values["created"] = htmltool::datetime2local($values["created"]);
             $users[] = $values;
         }
 

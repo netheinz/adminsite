@@ -27,4 +27,23 @@ class htmltool
         $class = isset($attr["class"]) ? $attr["class"] : "icon";
         return "<a class='$class' href='$link'><i class='fas fa-".$icon."'></i></a>\n";
     }
+
+    /**
+     * @param $date
+     * @return string
+     */
+    static function date2local($date) {
+        $dkmonths = array(1 => "Januar",
+            "Februar", "Marts", "April", "Maj", "Juni", "Juli",
+            "August", "September", "Oktober", "November", "December");
+        return date("j", $date) . ". " . $dkmonths[date("n", $date)] . " " . date("Y", $date);
+    }
+
+    /**
+     * @param $date
+     * @return string
+     */
+    static function datetime2local($date) {
+        return self::date2local($date) . " Kl. " . date("H:i", $date);
+    }
 }

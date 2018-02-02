@@ -12,7 +12,6 @@ $strJs = isset($strJs) && !empty($strJs) ? $strJs : "jquery.min,bootstrap.min,mo
     <link rel="shortcut icon" href="/cms/assets/images/elma-favo.ico">
     <link href="/cms/assets/css/css.php?f=<?php echo $strCss ?>" rel="stylesheet" type="text/css"/>
     <script src="/cms/assets/js/js.php?f=<?php echo $strJs ?>" type="text/javascript"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <title>El Mando <?php if(!empty($strModuleName)) { echo ":: " . $strModuleName; } ?></title>
 </head>
 
