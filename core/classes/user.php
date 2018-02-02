@@ -20,7 +20,8 @@ class user {
     public $phone1;
     public $phone2;
     public $phone3;
-    public $org_id;
+    public $birthdate;
+    public $gender;
     public $created;
     public $suspended;
     public $deleted;
@@ -29,12 +30,7 @@ class user {
     public $arrFormElms;
     public $arrValues;
     public $arrGroups;
-    
-    public $sysadmin;
-    public $admin;
-    public $extranet;
-    public $newsletter;
-    private $db;
+
 
     /**
      * Class Constructor
@@ -64,7 +60,8 @@ class user {
             "phone1" => "Telefon 1",
             "phone2" => "Telefon 2",
             "phone3" => "Telefon 3",
-            "org_id" => "Organisation",
+            "birthday" => "Fødselsdato",
+            "gender" => "Køn",
             "created" => "Oprettelsesdato",
             "suspended" => "Suspenderet"
         );
@@ -92,7 +89,6 @@ class user {
             "phone1" => array("text", FILTER_SANITIZE_STRING, FALSE, ""),
             "phone2" => array("text", FILTER_SANITIZE_STRING, FALSE, ""),
             "phone3" => array("text", FILTER_SANITIZE_STRING, FALSE, ""),
-            "org_id" => array("select", FILTER_SANITIZE_STRING, FALSE, 0),
             "created" => array("hidden", FILTER_SANITIZE_STRING, FALSE, 0),
             "suspended" => array("checkbox", FILTER_VALIDATE_INT, FALSE, 0),
         );
@@ -117,22 +113,14 @@ class user {
      */
     public function getuser($id) {
         $this->id = $id;
-        $sql = "SELECT u.*, o.vcOrgName " . 
+        $sql = "SELECT u.* " .
                 "FROM user u " . 
-                "LEFT JOIN org o " . 
-                "ON u.org_id = o.org_id " . 
-                "WHERE id = ? " . 
+                "WHERE id = ? " .
                 "AND u.deleted = 0";
         if($row = $this->db->_fetch_array($sql, array($this->id))) {
             foreach($row[0] as $key => $value) {
                 $this->$key = $value;
             }
-            $this->arrGroups = $this->getgrouprelations();
-        
-            foreach($this->arrGroups as $value) {
-                $role = strtolower($value["vcRoleName"]);
-                $this->$role = 1;
-            }        
         }
     }
     
@@ -159,7 +147,6 @@ class user {
                 $this->phone1,
                 $this->phone2,
                 $this->phone3,
-                $this->org_id,
                 $this->created,
                 $this->suspended,
                 $this->id
@@ -188,8 +175,7 @@ class user {
                     "phone1 = ?, " . 
                     "phone2 = ?, " . 
                     "phone3 = ?, " . 
-                    "org_id = ?, " . 
-                    "created = ?, " . 
+                    "created = ?, " .
                     "suspended = ? " . 
                     "WHERE id = ?";
             
@@ -214,7 +200,6 @@ class user {
                 $this->phone1,
                 $this->phone2,
                 $this->phone3,
-                $this->org_id,
                 time(),
                 $this->suspended
             );
@@ -233,8 +218,7 @@ class user {
                     "phone1, " . 
                     "phone2, " . 
                     "phone3, " . 
-                    "org_id, " . 
-                    "created, " . 
+                    "created, " .
                     "suspended) " . 
                     "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; 
                         
@@ -245,21 +229,6 @@ class user {
         }
         
     }
-    
-    /**
-     * Get user related groups
-     * @return array of related groups
-     */
-    public function getgrouprelations() {
-        $params = array($this->id);
-        $strSelect = "SELECT g.iGroupID, g.vcGroupName, g.vcRoleName " . 
-                        "FROM usergroup g " . 
-                        "LEFT JOIN usergrouprel x " . 
-                        "ON x.iGroupID = g.iGroupID " .                 
-                        "WHERE x.id = ? " . 
-                        "AND g.deleted = 0";
-        return $this->db->_fetch_array($strSelect, $params);        
-    } 
     
     /**
      * Mark user as deleted

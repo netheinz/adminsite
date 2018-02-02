@@ -37,7 +37,7 @@ class listPresenter {
     public function presentdetails() {
 
         $this->accHtml = "<div class=\"table-responsive\">\n"
-            . "<table class=\"table-striped table-details ".$this->strListClass." \">\n";
+                        . "<table class=\"table-striped table-details ".$this->strListClass." \">\n";
         foreach($this->arrValues as $key => $value) {
             if(isset($this->arrLabels[$key]) && $this->arrLabels[$key]) {
                 $this->accHtml .= "</tr>\n";

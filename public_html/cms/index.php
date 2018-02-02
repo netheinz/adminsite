@@ -45,6 +45,8 @@ switch(strtoupper($mode)) {
         break;
 
     case "DETAILS":
+        $id = (int)$_GET["id"];
+
         include DOCROOT . "/cms/assets/incl/header.php";
 
         $arrButtonPanel = [
@@ -53,8 +55,10 @@ switch(strtoupper($mode)) {
         echo textPresenter::presentpanel($strModuleName, "Vis detaljer", $arrButtonPanel);
 
         $user = new User();
-        $user->getuser((int)$_GET["id"]);
-        //$p = new listPresenter();
+        $user->getuser($id);
+
+        $p = new listPresenter();
+        echo $p->presentdetails();
 
         include DOCROOT . "/cms/assets/incl/footer.php";
         break;
