@@ -45,6 +45,7 @@ class listPresenter {
                 $this->accHtml .= "   <td>" . $value .  "   </td>\n";
                 $this->accHtml .= "</tr>\n";
             }
+
         }
 
         $this->accHtml .= "</table>\n";

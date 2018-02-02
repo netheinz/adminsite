@@ -56,6 +56,7 @@ switch(strtoupper($mode)) {
         $user = new User();
         $user->getuser($id);
         $users = get_object_vars($user);
+        unset($users["password"]);
 
         $p = new listPresenter($user->arrLabels, $users);
         echo $p->presentdetails();

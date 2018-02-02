@@ -47,7 +47,6 @@ class user {
          */
         $this->arrLabels = array(
             "id" => "Bruger ID",
-            "vcImage" => "Profilbillede",
             "username" => "Brugernavn",
             "password" => "Adgangskode",
             "firstname" => "Fornavn",
