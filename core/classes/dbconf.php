@@ -7,9 +7,9 @@
 class dbconf extends db {
     function __construct() {
         $this->dbhost = "127.0.0.1";
-        $this->dbuser = "heka";
-        $this->dbpassword = "password";
-        $this->dbname = "snippets";
+        $this->dbuser = "dbuser";
+        $this->dbpassword = "dbpassword";
+        $this->dbname = "database";
         $db = parent::_connect();
     }
 }
