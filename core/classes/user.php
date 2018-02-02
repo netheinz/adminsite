@@ -113,10 +113,10 @@ class user {
      */
     public function getuser($id) {
         $this->id = $id;
-        $sql = "SELECT u.* " .
-                "FROM user u " . 
+        $sql = "SELECT * " .
+                "FROM user " .
                 "WHERE id = ? " .
-                "AND u.deleted = 0";
+                "AND deleted = 0";
         if($row = $this->db->_fetch_array($sql, array($this->id))) {
             foreach($row[0] as $key => $value) {
                 $this->$key = $value;

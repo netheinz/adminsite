@@ -35,13 +35,13 @@ class listPresenter {
     }
 
     public function presentdetails() {
-
         $this->accHtml = "<div class=\"table-responsive\">\n"
-                        . "<table class=\"table-striped table-details ".$this->strListClass." \">\n";
+                        . "<table class=\"table-striped table-details\">\n";
         foreach($this->arrValues as $key => $value) {
-            if(isset($this->arrLabels[$key]) && $this->arrLabels[$key]) {
+
+            if(isset($this->arrColumns[$key]) && $this->arrColumns[$key]) {
                 $this->accHtml .= "</tr>\n";
-                $this->accHtml .= "   <td><b>" . $this->arrLabels[$key] . ":</b></td>\n";
+                $this->accHtml .= "   <td><b>" . $this->arrColumns[$key] . ":</b></td>\n";
                 $this->accHtml .= "   <td>" . $value .  "   </td>\n";
                 $this->accHtml .= "</tr>\n";
             }
