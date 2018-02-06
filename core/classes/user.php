@@ -59,7 +59,7 @@ class user {
             "phone1" => "Telefon 1",
             "phone2" => "Telefon 2",
             "phone3" => "Telefon 3",
-            "birthday" => "Fødselsdato",
+            "birthdate" => "Fødselsdato",
             "gender" => "Køn",
             "created" => "Oprettelsesdato",
             "suspended" => "Suspenderet"
@@ -75,7 +75,6 @@ class user {
          */
         $this->arrFormElms = array(
             "id" => array("hidden", FILTER_VALIDATE_INT, FALSE, 0),
-            "vcImage" => array("hidden", FILTER_SANITIZE_STRING, FALSE, ""),
             "username" => array("text", FILTER_SANITIZE_STRING, TRUE, ""),
             "password" => array("password", FILTER_SANITIZE_STRING, FALSE, ""),
             "firstname" => array("text", FILTER_SANITIZE_STRING, TRUE, ""),
@@ -88,6 +87,7 @@ class user {
             "phone1" => array("text", FILTER_SANITIZE_STRING, FALSE, ""),
             "phone2" => array("text", FILTER_SANITIZE_STRING, FALSE, ""),
             "phone3" => array("text", FILTER_SANITIZE_STRING, FALSE, ""),
+            "birthdate" => array("text", FILTER_SANITIZE_STRING, FALSE, ""),
             "created" => array("hidden", FILTER_SANITIZE_STRING, FALSE, 0),
             "suspended" => array("checkbox", FILTER_VALIDATE_INT, FALSE, 0),
         );
@@ -117,6 +117,7 @@ class user {
                 "WHERE id = ? " .
                 "AND deleted = 0";
         if($row = $this->db->_fetch_array($sql, array($this->id))) {
+
             foreach($row[0] as $key => $value) {
                 $this->$key = $value;
             }

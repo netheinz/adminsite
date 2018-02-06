@@ -55,6 +55,7 @@ switch(strtoupper($mode)) {
 
         $user = new User();
         $user->getuser($id);
+        $user->created = htmltool::datetime2local($user->created);
         $users = get_object_vars($user);
         unset($users["password"]);
 
@@ -65,33 +66,36 @@ switch(strtoupper($mode)) {
         break;
 
     case "EDIT";
+        $id = (int)$_GET["id"];
+
+        $user = new User();
+
+        if($id > 0) {
+            $user->getuser($id);
+            $strModeName = "Rediger bruger";
+        } else {
+            $strModeName = "Opret bruger";
+        }
+
+        /* Get property values */
+        $arrValues = get_object_vars($user);
+
+        include DOCROOT . "/cms/assets/incl/header.php";
+
+        $arrButtonPanel = [
+            htmltool::linkbutton("Oversigt", "?mode=list")
+        ];
+        echo textPresenter::presentpanel($strModuleName, $strModeName, $arrButtonPanel);
+
+
+        $p = new formpresenter($user->arrLabels, $user->arrFormElms, $arrValues);
+        echo $p->presentForm();
+
+        include DOCROOT . "/cms/assets/incl/footer.php";
+
         break;
 
     case "SAVE":
-        break;
-
-    case "DATA":
-        $arrUserData = array();
-        $sql = "SELECT * FROM user_data LIMIT 3";
-        $row = $db->_fetch_array($sql);
-        foreach($row as $key => $arrValues) {
-            $arrValues["password"] = password_hash($arrValues["password"], PASSWORD_BCRYPT);
-            $arrValues["ord_id"] = 1;
-            $arrValues["created"] = time();
-            $arrValues["suspended"] = 0;
-            $arrValues["deleted"] = 0;
-            $arrUserData[] = $arrValues;
-        }
-
-        echo "<pre>";
-        var_dump($arrUserData);
-        echo "</pre>";
-
-        $sql = "INSERT INTO user(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        foreach($arrUserData as $values) {
-            var_dump(array_values($values));
-            //$db->_query($sql, array_values($values));
-        }
         break;
 
     case "DELETE":

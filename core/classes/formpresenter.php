@@ -6,6 +6,7 @@ class formpresenter {
     public $arrLabels;
     public $arrFormElms;
     public $arrValues;
+
     public $accHtml;
     public $formId;
     public $formMethod;
@@ -37,7 +38,8 @@ class formpresenter {
      */
     public function presentForm() {
 
-        $this->accHtml = "<form method=\"" . $this->formMethod . "\" class=\"" . $this->formClass . " form-horizontal\" id=\"" . $this->formId . "\">\n";
+        $this->accHtml = "<form method=\"" . $this->formMethod . "\" class=\"" . $this->formClass .
+                                " form-horizontal\" id=\"" . $this->formId . "\">\n";
         $this->accHtml .= "<input type=\"hidden\" name=\"mode\" value=\"" . $this->formAction . "\">\n";
 
         /**
@@ -47,66 +49,23 @@ class formpresenter {
          * array[1] = filter_type
          * array[2] = Required Status (TRUE/FALSE)
          */
-        foreach ($this->arrFormElms as $key => $array) {
-            /* Set if field is required */
-            $required = ($array[2] === TRUE) ? "required" : "";
+        foreach ($this->arrFormElms as $key => $formelements) {
 
-            switch (strtoupper($array[0])) {
+            echo $key . "=>" . $formelements[0] . "<br>";
+
+            switch (strtoupper($formelements [0])) {
                 case "HIDDEN":
-                    $this->accHtml .= $this->inputHidden($key, $this->arrValues[$key]);
+                    echo "input:hidden";
                     break;
                 case "TEXT":
-                    $strInput = $this->inputText($key, $this->arrValues[$key], $required);
-                    $this->accHtml .= $this->setInputGroup($key, $this->arrLabels[$key], $strInput, $required);
-                    break;
-                case "TEXTAREA":
-                    $strInput = $this->inputTextarea($key, $this->arrValues[$key], $required);
-                    $this->accHtml .= $this->setInputGroup($key, $this->arrLabels[$key], $strInput, $required);
-                    break;
-                case "PASSWORD":
-                    $strInput = $this->inputPassword($key, $required);
-                    $this->accHtml .= $this->setInputGroup($key, $this->arrLabels[$key], $strInput, $required);
-                    $strInput = $this->inputPassword("vcPasswordMatch", "", $required);
-                    $this->accHtml .= $this->setInputGroup("vcPasswordMatch", "Gentag adgangskode", $strInput, $required);
-                    break;
-                case "CHECKBOX":
-                    $value = isset($this->arrValues[$key]) ? $key : 0;
-                    $strInput = $this->inputCheckbox($key, $value, $required);
-                    $this->accHtml .= $this->setInputGroup($key, $this->arrLabels[$key], $strInput, $required);
-                    break;
-                case "SELECT":
-                    $strInput = $this->arrValues[$key];
-                    $this->accHtml .= $this->setInputGroup($key, $this->arrLabels[$key], $strInput, $required);
-                    break;
-                case "DATE":
-                    $stamp = ($this->arrValues[$key] > 0) ? $this->arrValues[$key] : time();
-                    $d = new DateSelector($stamp);                    
-                    $strInput = "<div class=\"form-inline\">";
-                    $strInput .= $d->dateselect("day",$key);
-                    $strInput .= $d->dateselect("month",$key);
-                    $strInput .= $d->dateselect("year",$key);
-                    $strInput .= "</div>";
-                    $this->accHtml .= $this->setInputGroup($key, $this->arrLabels[$key], $strInput, $required);
-                    break;
-                case "DATETIME":
-                    $stamp = ($this->arrValues[$key] > 0) ? $this->arrValues[$key] : time();
-                    $d = new DateSelector($stamp);                    
-                    $strInput = "<div class=\"form-inline\">";
-                    $strInput .= $d->dateselect("day",$key);
-                    $strInput .= $d->dateselect("month",$key);
-                    $strInput .= $d->dateselect("year",$key);
-                    $strInput .= $d->dateselect("hours",$key);
-                    $strInput .= $d->dateselect("minutes",$key);
-                    $strInput .= "</div>";
-                    $this->accHtml .= $this->setInputGroup($key, $this->arrLabels[$key], $strInput, $required);
                     break;
             }
         }
 
         $this->accHtml .= "<div class=\"buttonpanel\">\n\t";
         if (empty($this->arrButtons)) {
-            $this->accHtml .= getButton("button", "Annuller", "goback()") . "\t";
-            $this->accHtml .= getButton("submit", "Gem");
+            $this->accHtml .= htmltool::button("Annuller", "button") . "\t";
+            $this->accHtml .= htmltool::button("Gem");
         } else {
             foreach ($this->arrButtons as $key => $value) {
                 $this->accHtml .= $value;
@@ -127,53 +86,6 @@ class formpresenter {
 
     public function inputText($id, $value, $required) {
         return "<input type=\"text\" name=\"" . $id . "\" id=\"" . $id . "\" class=\"form-control\" value=\"" . $value . "\" " . $required . ">\n";
-    }
-
-    /* Method inputTextarea */
-
-    public function inputTextarea($id, $value, $required) {
-        return "<textarea name=\"" . $id . "\" id=\"" . $id . "\" class=\"form-control\" " . $required . ">".$value."</textarea>\n";
-    }
-
-    /* Method inputEmail */
-
-    public function inputEmail($id, $value, $required) {
-        return "<input type=\"email\" name=\"" . $id . "\" id=\"" . $id . "\" value=\"" . $value . "\" " . $required . ">\n";
-    }
-
-    /* Method inputEmail */
-
-    public function inputCheckbox($id, $value, $required) {
-        $checked = ($id === $value) ? "checked" : "";
-        return "<input type=\"checkbox\" name=\"" . $id . "\" id=\"" . $id . "\" value=\"1\" " . $required . " " . $checked . ">\n";
-    }
-
-    /* Method inputPassword */
-
-    public function inputPassword($id, $required) {
-        return "<input type=\"password\" name=\"" . $id . "\" id=\"" . $id . "\" class=\"form-control\" " . $required . ">\n";
-    }
-
-    /**
-     * Builds a select box
-     * Use static function to build select box before form presenter output 
-     * @param string $id
-     * @param array $options
-     * @param int $value
-     * @return string html with selectbox
-     */
-    static function inputSelect($id, $options, $value) {
-        $strHtml = "<select class=\"form-control\" id=\"" . $id . "\" name=\"" . $id . "\">\n";
-        foreach ($options as $option) {
-            /* Convert to array with numeric index */
-            $array = array_values($option);
-            /* Define if option should be selected */
-            $selected = ($value === $array[0]) ? "selected" : "";
-            /* Accumulate html string with option */
-            $strHtml .= "<option value=\"" . $array[0] . "\" " . $selected . ">" . $array[1] . "</option>\n";
-        }
-        $strHtml .= "</select>\n";
-        return $strHtml;
     }
 
     /* Method setLabel */

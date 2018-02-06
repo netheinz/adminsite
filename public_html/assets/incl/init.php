@@ -6,5 +6,4 @@ define("COREPATH", substr(DOCROOT, 0, strrpos(DOCROOT,"/")) . "/core/");
 require_once COREPATH . 'classes/autoload.php';
 
 /* Classloader */
-$classloader = new Autoload();
 $db = new dbconf();

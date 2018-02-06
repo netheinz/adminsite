@@ -12,6 +12,6 @@ $auth = new Auth();
 $auth->authenticate();
 
 if(!$auth->user_id) {
-    echo $auth->loginform(Auth::ERR_NOACCESS);
+    echo $auth->loginform(Auth::ERROR_NOACCESS);
     exit();
 }

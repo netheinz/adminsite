@@ -13,6 +13,15 @@ class htmltool
      * @param $link
      * @return string
      */
+    static function button($text, $type = "submit", $class = "btn btn-primary") {
+        return "<button type='".$type."' class='".$class."'>" . $text . "</button>\n";
+    }
+
+    /**
+     * @param $text
+     * @param $link
+     * @return string
+     */
     static function linkbutton($text, $link) {
         return "<a class='btn btn-primary' href='$link'>" . $text . "</a>\n";
     }
