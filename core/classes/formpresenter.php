@@ -3,7 +3,6 @@
 class formpresenter {
     /* Class Properties */
 
-    public $arrLabels;
     public $arrFormElms;
     public $arrValues;
 
@@ -22,8 +21,7 @@ class formpresenter {
      * @param array $arrFormElms
      * @param array $arrValues
      */
-    public function __construct($arrLabels, $arrFormElms, $arrValues) {
-        $this->arrLabels = $arrLabels;
+    public function __construct($arrFormElms, $arrValues) {
         $this->arrFormElms = $arrFormElms;
         $this->arrValues = $arrValues;
 
@@ -46,15 +44,16 @@ class formpresenter {
         $this->accHtml .= "<input type=\"hidden\" name=\"mode\" value=\"" . $this->formAction . "\">\n";
 
         /**
-         * Loops arrFormElms and switches input type
-         * Every field type has its own method 
-         * array[0] = formtype
-         * array[1] = filter_type
-         * array[2] = Required Status (TRUE/FALSE)
+         * Looper arrFormElms og laver en switch på felt typer
+         * Hver felttype har sin egen metode som returnerer feltet i html
+         * Synlige felter returneres med metoden inputGroup som wrapper feltets html i div tags
+         * array[0] = field type
+         * array[1] = field label
+         * array[2] = required status (TRUE/FALSE)
+         * array[3] = filter_type
+         * array[4] = default value
          */
         foreach ($this->arrFormElms as $name => $formelements) {
-
-            //echo $key . "=>" . $formelements[0] . ", " . $formelements[2] . "<hr>";
 
             switch (strtoupper($formelements[0])) {
                 case "HIDDEN":
@@ -62,11 +61,23 @@ class formpresenter {
                     break;
                 case "TEXT":
                     $strInputHtml = $this->inputText($name, $this->arrValues[$name], $formelements[2]);
-                    $this->accHtml .= $this->setInputGroup($name, $this->arrLabels[$name], $strInputHtml, $formelements[2]);
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
+                    break;
+                case "EMAIL":
+                    $strInputHtml = $this->inputEmail($name, $this->arrValues[$name], $formelements[2]);
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
+                    break;
+                case "SELECT":
+                    $strInputHtml = $this->arrValues[$name];
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
                     break;
             }
         }
 
+        /**
+         * Tilføjer panel til knapper
+         * Definerer Gem og Annuller som standard hvis andet ikke er angivet
+         */
         $this->accHtml .= "<div class=\"buttonpanel\">\n\t";
         if (empty($this->arrButtons)) {
             $this->accHtml .= htmltool::button("Annuller", "button") . "\t";
@@ -81,24 +92,70 @@ class formpresenter {
         return $this->accHtml;
     }
 
-    /* Method inputHidden */
-
+    /**
+     * Metode til input:hidden
+     * @param $name Feltets navn
+     * @param $value Feltets værdi
+     * @return string Feltet som html
+     */
     public function inputHidden($name, $value) {
         return "<input type=\"hidden\" name=\"" . $name . "\" id=\"" . $name . "\" value=\"" . $value . "\">\n";
     }
 
-    /* Method inputText */
-
+    /**
+     * Metode til input:text
+     * @param $name Feltets navn
+     * @param $value Feltets værdi
+     * @param $required Feltets nødvendighed (required)
+     * @return string Feltet som html
+     */
     public function inputText($name, $value, $required) {
         return "<input type=\"text\" name=\"" . $name . "\" id=\"" . $name . "\" class=\"form-control\" value=\"" . $value . "\" " . $required . ">\n";
     }
 
-    /* Method setLabel */
+    /**
+     * Metode til input:email
+     * @param $name Feltets navn
+     * @param $value Feltets værdi
+     * @param $required Feltets nødvendighed (required)
+     * @return string Feltet som html
+     */
+    public function inputEmail($name, $value, $required) {
+        return "<input type=\"email\" name=\"" . $name . "\" id=\"" . $name . "\" class=\"form-control\" value=\"" . $value . "\" " . $required . ">\n";
+    }
 
-    public function setInputGroup($id, $label, $strInput, $required) {
-        $str = "<div class=\"form-group\" data-group=\"" . $id . "\">\n";
-        $str .= "  <label class=\"col-sm-3 control-label " . $required . "\" for=\"" . $id . "\">" . $label . ":</label>\n";
-        $str .= "  <div class=\"col-sm-9\">\n\t" . $strInput . "  </div>\n";
+    /**
+     * Metode til select boks
+     * Select bokse kaldes fra admin modul siden med navn, options og eksisterende værdi
+     * @param string $name Navn på select box
+     * @param array $options Array med options - Struktur: array[option_value] = option_text
+     * @param int $value Allerede eksisterende værdi til valg af selected option
+     * @return string html with selectbox
+     */
+    static function inputSelect($name, $options, $value) {
+        $strHtml = "<select class=\"form-control\" id=\"" . $name . "\" name=\"" . $name . "\">\n";
+        foreach ($options as $option_value => $option_text) {
+            /* Define if option should be selected */
+            $selected = ($option_value === $value) ? "selected" : "";
+            /* Accumulate html string with option */
+            $strHtml .= "<option value=\"" . $option_value . "\" " . $selected . ">" . $option_text . "</option>\n";
+        }
+        $strHtml .= "</select>\n";
+        return $strHtml;
+    }
+
+    /**
+     * Metode til at wrappe input felter i html tags
+     * @param $fieldname Feltets navn
+     * @param $labeltext Lebel tekst
+     * @param $strInputHtml html med input element
+     * @param $required status for feltets nødvendighed
+     * @return string Streng med input og wrapper html
+     */
+    public function setInputGroup($fieldname, $labeltext, $strInputHtml, $required) {
+        $str = "<div class=\"form-group\" data-group=\"" . $fieldname . "\">\n";
+        $str .= "  <label class=\"col-sm-3 control-label " . $required . "\" for=\"" . $fieldname . "\">" . $labeltext . ":</label>\n";
+        $str .= "  <div class=\"col-sm-9\">\n\t" . $strInputHtml . "  </div>\n";
         $str .= "</div>\n\n";
         return $str;
     }

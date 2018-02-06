@@ -87,8 +87,34 @@ switch(strtoupper($mode)) {
         ];
         echo textPresenter::presentpanel($strModuleName, $strModeName, $arrButtonPanel);
 
+        /**
+         * Select box
+         * Brug array til options
+         * Struktur: array[option_value] = option_text
+         * Array fra db fetch skal modificeres med funktionerne array_combine og array_column
+         */
+        $sql = "SELECT id, CONCAT(firstname, ' ', lastname) as name FROM user WHERE deleted = 0";
+        $row = $db->_fetch_array($sql);
 
-        $p = new formpresenter($user->arrLabels, $user->arrFormElms, $arrValues);
+        /**
+         * Array column returnerer nyt array med værdier fra navngivne index
+         * Eks: array_column($row, "id") = array[0] = id, ...
+         * Eks: array_column($row, "name") = array[0] = "Karen Jørgensen", ...
+         * Combiner de to arrays i users som holder ovenstående struktur
+         * Eks: array[1] = "Karen Jørgensen"
+         */
+        $users = array_combine(array_column($row, "id"),array_column($row, "name"));
+
+        /**
+         * Indsæt en option til standardvisning (Vælg bruger) med array_unshift
+         */
+        array_unshift($users, "Vælg bruger");
+
+
+        $arrGenderOptions = ["m" => "Mand", "k" => "Kvinde"];
+        $arrValues["gender"] = formpresenter::inputSelect("gender", $users, $user->gender);
+
+        $p = new formpresenter($user->arrFormElms, $arrValues);
         echo $p->presentForm();
 
         include DOCROOT . "/cms/assets/incl/footer.php";

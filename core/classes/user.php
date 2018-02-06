@@ -26,7 +26,6 @@ class user {
     public $suspended;
     public $deleted;
 
-    public $arrLabels;
     public $arrFormElms;
     public $arrValues;
     public $arrGroups;
@@ -39,59 +38,36 @@ class user {
     public function __construct() {
         global $db;
         $this->db = $db;
-        
+
         /**
-         * Array for friendly labels: 
-         * Index = fieldname
-         * Value = friendly name
+         * Array til form input felter:
+         * 1. Index = feltets navn
+         *      array[0] = feltets type (hidden, text, textarea, select...)
+         *      array[1] = feltets label
+         *      array[2] = required - bool der angiver om feltet skal udfyldes eller ej (TRUE/FALSE)
+         *      array[3] = filter_type - Filter til rensning af feltet i en request
+         *      array[4] = Standard værdi som bruges hvis indhold er tomt
          */
-        $this->arrLabels = array(
-            "id" => "Bruger ID",
-            "username" => "Brugernavn",
-            "password" => "Adgangskode",
-            "firstname" => "Fornavn",
-            "lastname" => "Efternavn",
-            "address" => "Adresse",
-            "zipcode" => "Postnummer",
-            "city" => "By",
-            "country" => "Land",
-            "email" => "Email",
-            "phone1" => "Telefon 1",
-            "phone2" => "Telefon 2",
-            "phone3" => "Telefon 3",
-            "birthdate" => "Fødselsdato",
-            "gender" => "Køn",
-            "created" => "Oprettelsesdato",
-            "suspended" => "Suspenderet"
-        );
-        
-        /**
-         * Array for formfields: 
-         * Index = fieldname
-         * Value[0] = formtype
-         * Value[1] = filter_type
-         * Value[2] = Required Status (TRUE/FALSE)
-         * Value[3] = Default value
-         */
-        $this->arrFormElms = array(
-            "id" => array("hidden", FILTER_VALIDATE_INT, FALSE, 0),
-            "username" => array("text", FILTER_SANITIZE_STRING, TRUE, ""),
-            "password" => array("password", FILTER_SANITIZE_STRING, FALSE, ""),
-            "firstname" => array("text", FILTER_SANITIZE_STRING, TRUE, ""),
-            "lastname" => array("text", FILTER_SANITIZE_STRING, TRUE, ""),
-            "address" => array("text", FILTER_SANITIZE_STRING, TRUE, ""),
-            "zipcode" => array("text", FILTER_SANITIZE_STRING, TRUE, 0),
-            "city" => array("text", FILTER_SANITIZE_STRING, TRUE, ""),
-            "country" => array("text", FILTER_SANITIZE_STRING, TRUE, ""),
-            "email" => array("text", FILTER_SANITIZE_STRING, TRUE, ""),
-            "phone1" => array("text", FILTER_SANITIZE_STRING, FALSE, ""),
-            "phone2" => array("text", FILTER_SANITIZE_STRING, FALSE, ""),
-            "phone3" => array("text", FILTER_SANITIZE_STRING, FALSE, ""),
-            "birthdate" => array("text", FILTER_SANITIZE_STRING, FALSE, ""),
-            "created" => array("hidden", FILTER_SANITIZE_STRING, FALSE, 0),
-            "suspended" => array("checkbox", FILTER_VALIDATE_INT, FALSE, 0),
-        );
-        
+        $this->arrFormElms = [
+                "id" => ["hidden", "Bruger ID", FALSE, FILTER_VALIDATE_INT, 0],
+                "username" => ["text", "Brugernavn", TRUE, FILTER_SANITIZE_STRING, ""],
+                "password" => ["password", "Adgangskode", FALSE, FILTER_SANITIZE_STRING, ""],
+                "firstname" => ["text", "Fornavn", TRUE, FILTER_SANITIZE_STRING, ""],
+                "lastname" => ["text", "Efternavn", TRUE, FILTER_SANITIZE_STRING, ""],
+                "address" => ["text", "Adresse", TRUE, FILTER_SANITIZE_STRING, ""],
+                "zipcode" => ["text", "Postnummer", TRUE, FILTER_SANITIZE_STRING, ""],
+                "city" => ["text", "By", TRUE, FILTER_SANITIZE_STRING, ""],
+                "country" => ["text", "Land", TRUE, FILTER_SANITIZE_STRING, ""],
+                "email" => ["email", "Email", TRUE, FILTER_VALIDATE_EMAIL, ""],
+                "phone1" => ["text", "Telefon 1", TRUE, FILTER_SANITIZE_STRING, ""],
+                "phone2" => ["text", "Telefon 2", TRUE, FILTER_SANITIZE_STRING, ""],
+                "phone3" => ["text", "Telefon 3", TRUE, FILTER_SANITIZE_STRING, ""],
+                "birthdate" => ["text", "Fødselsdato", TRUE, FILTER_SANITIZE_STRING, ""],
+                "gender" => ["select", "Køn", TRUE, FILTER_SANITIZE_STRING, ""],
+                "created" => ["hidden", "Oprettet", TRUE, FILTER_SANITIZE_STRING, ""],
+                "suspended" => ["checkbox", "Suspenderet", TRUE, FILTER_SANITIZE_STRING, ""]
+            ];
+
         $this->arrValues = array();
     }
     
