@@ -8,6 +8,7 @@ class formpresenter {
     public $arrValues;
 
     public $accHtml;
+
     public $formId;
     public $formMethod;
     public $formAction;
@@ -25,11 +26,13 @@ class formpresenter {
         $this->arrLabels = $arrLabels;
         $this->arrFormElms = $arrFormElms;
         $this->arrValues = $arrValues;
+
         $this->formId = "adminform";
         $this->formMethod = "POST";
         $this->formAction = "save";
         $this->formClass = "";
         $this->arrButtons = "";
+
         $this->accHtml = "";
     }
 
@@ -49,15 +52,17 @@ class formpresenter {
          * array[1] = filter_type
          * array[2] = Required Status (TRUE/FALSE)
          */
-        foreach ($this->arrFormElms as $key => $formelements) {
+        foreach ($this->arrFormElms as $name => $formelements) {
 
-            echo $key . "=>" . $formelements[0] . "<br>";
+            //echo $key . "=>" . $formelements[0] . ", " . $formelements[2] . "<hr>";
 
-            switch (strtoupper($formelements [0])) {
+            switch (strtoupper($formelements[0])) {
                 case "HIDDEN":
-                    echo "input:hidden";
+                    $this->accHtml .= $this->inputHidden($name, $this->arrValues[$name]);
                     break;
                 case "TEXT":
+                    $strInputHtml = $this->inputText($name, $this->arrValues[$name], $formelements[2]);
+                    $this->accHtml .= $this->setInputGroup($name, $this->arrLabels[$name], $strInputHtml, $formelements[2]);
                     break;
             }
         }
@@ -78,21 +83,21 @@ class formpresenter {
 
     /* Method inputHidden */
 
-    public function inputHidden($id, $value) {
-        return "<input type=\"hidden\" name=\"" . $id . "\" id=\"" . $id . "\" value=\"" . $value . "\">\n";
+    public function inputHidden($name, $value) {
+        return "<input type=\"hidden\" name=\"" . $name . "\" id=\"" . $name . "\" value=\"" . $value . "\">\n";
     }
 
     /* Method inputText */
 
-    public function inputText($id, $value, $required) {
-        return "<input type=\"text\" name=\"" . $id . "\" id=\"" . $id . "\" class=\"form-control\" value=\"" . $value . "\" " . $required . ">\n";
+    public function inputText($name, $value, $required) {
+        return "<input type=\"text\" name=\"" . $name . "\" id=\"" . $name . "\" class=\"form-control\" value=\"" . $value . "\" " . $required . ">\n";
     }
 
     /* Method setLabel */
 
-    public function setInputGroup($id, $name, $strInput, $required) {
+    public function setInputGroup($id, $label, $strInput, $required) {
         $str = "<div class=\"form-group\" data-group=\"" . $id . "\">\n";
-        $str .= "  <label class=\"col-sm-3 control-label " . $required . "\" for=\"" . $id . "\">" . $name . ":</label>\n";
+        $str .= "  <label class=\"col-sm-3 control-label " . $required . "\" for=\"" . $id . "\">" . $label . ":</label>\n";
         $str .= "  <div class=\"col-sm-9\">\n\t" . $strInput . "  </div>\n";
         $str .= "</div>\n\n";
         return $str;
