@@ -17,7 +17,6 @@ class formpresenter {
 
     /**
      * Constructor
-     * @param array $arrLabels
      * @param array $arrFormElms
      * @param array $arrValues
      */
