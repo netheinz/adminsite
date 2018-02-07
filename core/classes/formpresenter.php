@@ -1,7 +1,9 @@
 <?php
 
 class formpresenter {
-    /* Class Properties */
+    /**
+     * Class Properties
+     */
 
     public $arrFormElms;
     public $arrValues;
@@ -70,6 +72,29 @@ class formpresenter {
                     $strInputHtml = $this->arrValues[$name];
                     $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
                     break;
+                case "DATE":
+                    $stamp = ($this->arrValues[$name] > 0) ? $this->arrValues[$name] : time();
+                    $d = new DateSelector($stamp);
+                    $strInput = "<div class=\"form-inline\">";
+                    $strInput .= $d->dateselect("day",$name);
+                    $strInput .= $d->dateselect("month",$name);
+                    $strInput .= $d->dateselect("year",$name);
+                    $strInput .= "</div>";
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInput, $formelements[2]);
+                    break;
+                case "DATETIME":
+                    $stamp = ($this->arrValues[$name] > 0) ? $this->arrValues[$name] : time();
+                    $d = new DateSelector($stamp);
+                    $strInput = "<div class=\"form-inline\">";
+                    $strInput .= $d->dateselect("day",$name);
+                    $strInput .= $d->dateselect("month",$name);
+                    $strInput .= $d->dateselect("year",$name);
+                    $strInput .= $d->dateselect("hours",$name);
+                    $strInput .= $d->dateselect("minutes",$name);
+                    $strInput .= "</div>";
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInput, $formelements[2]);
+                    break;
+
             }
         }
 

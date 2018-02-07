@@ -62,7 +62,7 @@ class user {
                 "phone1" => ["text", "Telefon 1", TRUE, FILTER_SANITIZE_STRING, ""],
                 "phone2" => ["text", "Telefon 2", TRUE, FILTER_SANITIZE_STRING, ""],
                 "phone3" => ["text", "Telefon 3", TRUE, FILTER_SANITIZE_STRING, ""],
-                "birthdate" => ["text", "Fødselsdato", TRUE, FILTER_SANITIZE_STRING, ""],
+                "birthdate" => ["datetime", "Fødselsdato", TRUE, FILTER_SANITIZE_STRING, ""],
                 "gender" => ["select", "Køn", TRUE, FILTER_SANITIZE_STRING, ""],
                 "created" => ["hidden", "Oprettet", TRUE, FILTER_SANITIZE_STRING, ""],
                 "suspended" => ["checkbox", "Suspenderet", TRUE, FILTER_SANITIZE_STRING, ""]

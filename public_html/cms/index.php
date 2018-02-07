@@ -44,22 +44,35 @@ switch(strtoupper($mode)) {
         break;
 
     case "DETAILS":
+        /* Sikrer numerisk id fra GET var */
         $id = (int)$_GET["id"];
 
         include DOCROOT . "/cms/assets/incl/header.php";
 
+        /* Definerer modul header med titler og navigation */
         $arrButtonPanel = [
             htmltool::linkbutton("Oversigt", "?mode=list")
         ];
         echo textPresenter::presentpanel($strModuleName, "Vis detaljer", $arrButtonPanel);
 
+        /* Kalder user class og henter bruger ud fra id */
         $user = new User();
         $user->getuser($id);
+
+        /* Konverterer timestamp til læsevenligt format */
         $user->created = htmltool::datetime2local($user->created);
+
+        /* Henter class properties med values ud som array */
         $users = get_object_vars($user);
+
+        /* Fjerner brugers password fra array */
         unset($users["password"]);
 
-        $p = new listPresenter($user->arrLabels, $users);
+        /** Bygger array med keys og labels ud fra arrFormElms */
+        $array_labels = array_combine(array_keys($user->arrFormElms), array_column($user->arrFormElms, "1"));
+
+        /* Kalder class listpresenter og udskriver detaljer */
+        $p = new listPresenter($array_labels, $users);
         echo $p->presentdetails();
 
         include DOCROOT . "/cms/assets/incl/footer.php";
@@ -82,40 +95,54 @@ switch(strtoupper($mode)) {
 
         include DOCROOT . "/cms/assets/incl/header.php";
 
+        /* Definerer modul header med titler og navigation */
         $arrButtonPanel = [
             htmltool::linkbutton("Oversigt", "?mode=list")
         ];
         echo textPresenter::presentpanel($strModuleName, $strModeName, $arrButtonPanel);
 
         /**
-         * Select box
-         * Brug array til options
-         * Struktur: array[option_value] = option_text
+         * Select bokse
+         * Select bokse defineres her på modulsiderne med formpresenter metoden inputSelect
+         * Metoden tager tre argumenter: name, options og selected value
+         * Optionerne defineres som et array
+         * Metoden kaldes fra det pågældende felt i arrValues.
+         *
+         * Eksempel:
+         * $arrValues["org_id"] = formpresenter::inputSelect("org_id", $array_orgs, $user->org_id);
+         *
+         * Eksempel på option udtræk fra en database
          * Array fra db fetch skal modificeres med funktionerne array_combine og array_column
-         */
-        $sql = "SELECT id, CONCAT(firstname, ' ', lastname) as name FROM user WHERE deleted = 0";
-        $row = $db->_fetch_array($sql);
-
-        /**
          * Array column returnerer nyt array med værdier fra navngivne index
          * Eks: array_column($row, "id") = array[0] = id, ...
          * Eks: array_column($row, "name") = array[0] = "Karen Jørgensen", ...
          * Combiner de to arrays i users som holder ovenstående struktur
          * Eks: array[1] = "Karen Jørgensen"
+         *
+         * ### Eksempel ###
+         *
+         * $sql = "SELECT id, CONCAT(firstname, ' ', lastname) as name FROM user WHERE deleted = 0";
+         * $row = $db->_fetch_array($sql);
+         * $array_users = array_combine(array_column($row, "id"),array_column($row, "name"));
+         *
+         * Indsæt en option til standardvisning (Vælg bruger) med array_unshift
+         * array_unshift($users, "Vælg bruger");
+
+         * Eksempel på defineret option array
          */
-        $users = array_combine(array_column($row, "id"),array_column($row, "name"));
+        $array_gender_options = ["m" => "Mand", "k" => "Kvinde"];
 
         /**
-         * Indsæt en option til standardvisning (Vælg bruger) med array_unshift
+         * Kalder metoden inputSelect med argumenter og assigner output til arrValues
          */
-        array_unshift($users, "Vælg bruger");
+        $arrValues["gender"] = formpresenter::inputSelect("gender", $array_gender_options, $user->gender);
 
-
-        $arrGenderOptions = ["m" => "Mand", "k" => "Kvinde"];
-        $arrValues["gender"] = formpresenter::inputSelect("gender", $users, $user->gender);
-
+        /**
+         * Kalder form presenter og udskriver formen
+         */
         $p = new formpresenter($user->arrFormElms, $arrValues);
         echo $p->presentForm();
+
 
         include DOCROOT . "/cms/assets/incl/footer.php";
 
