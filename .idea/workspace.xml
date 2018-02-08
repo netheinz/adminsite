@@ -17,11 +17,21 @@
       <file leaf-file-name="index.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public_html/cms/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="637">
-              <caret line="143" column="8" lean-forward="false" selection-start-line="143" selection-start-column="8" selection-end-line="143" selection-end-column="8" />
+            <state relative-caret-position="576">
+              <caret line="181" column="42" lean-forward="false" selection-start-line="181" selection-start-column="42" selection-end-line="181" selection-end-column="42" />
               <folding>
-                <marker date="1518079083659" expanded="true" signature="4591:4670" ph="SELECT id, C... user" />
+                <marker date="1518090206266" expanded="true" signature="5137:5216" ph="SELECT id, C... user" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="listpresenter.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/classes/listpresenter.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="62">
+              <caret line="7" column="20" lean-forward="false" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -180,7 +190,7 @@
       <updated>1517558838884</updated>
       <workItem from="1517906601238" duration="18409000" />
       <workItem from="1517998214003" duration="3674000" />
-      <workItem from="1518074963341" duration="2736000" />
+      <workItem from="1518074963341" duration="8221000" />
     </task>
     <task id="LOCAL-00001" summary="Updates på adminsite :)">
       <created>1517907616904</created>
@@ -252,11 +262,18 @@
       <option name="project" value="LOCAL" />
       <updated>1518077253040</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Torsdag morgen updates 2 :)">
+      <created>1518079095765</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1518079095765</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24819000" />
+    <option name="totallyTimeSpent" value="30304000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -292,7 +309,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Updates på adminsite :)" />
     <MESSAGE value="Torsdag morgen updates :)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Torsdag morgen updates :)" />
+    <MESSAGE value="Torsdag morgen updates 2 :)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Torsdag morgen updates 2 :)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -343,14 +361,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/classes/listpresenter.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="41" column="72" lean-forward="false" selection-start-line="41" selection-start-column="72" selection-end-line="41" selection-end-column="72" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/adminsite_2018-02-02.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -394,12 +404,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/classes/listpresenter.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="62">
+          <caret line="7" column="20" lean-forward="false" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/standard/standard_9.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="257" column="28" lean-forward="false" selection-start-line="257" selection-start-column="16" selection-end-line="257" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public_html/cms/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="637">
-          <caret line="143" column="8" lean-forward="false" selection-start-line="143" selection-start-column="8" selection-end-line="143" selection-end-column="8" />
+        <state relative-caret-position="576">
+          <caret line="181" column="42" lean-forward="false" selection-start-line="181" selection-start-column="42" selection-end-line="181" selection-end-column="42" />
           <folding>
-            <marker date="1518079083659" expanded="true" signature="4591:4670" ph="SELECT id, C... user" />
+            <marker date="1518090206266" expanded="true" signature="5137:5216" ph="SELECT id, C... user" />
           </folding>
         </state>
       </provider>

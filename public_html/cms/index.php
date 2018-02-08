@@ -8,25 +8,32 @@ switch (strtoupper($mode)) {
     case "LIST":
         include DOCROOT . "/cms/assets/incl/header.php";
 
+        /* Inkluder header og sidepanel med titler og navi */
         $arrButtonPanel = [
             htmltool::linkbutton("Opret ny", "?mode=edit&id=-1")
         ];
         echo textPresenter::presentpanel($strModuleName, "Oversigt af dummies", $arrButtonPanel);
 
-        $columns = [
-            "options" => "",
-            "username" => "Brugernavn",
-            "firstname" => "Fornavn",
-            "lastname" => "Efternavn",
-            "email" => "Email",
-            "created" => "Oprettet"
-        ];
-
+        /* Opretter objektet user ud fra user klassen */
         $user = new User();
 
+        /* Definerer array til brugerliste */
         $users = array();
 
+        /* Array med felter der skal vises i listen*/
+        $array_columns_fields = [
+            "username", "firstname", "lastname", "email", "created"
+        ];
 
+        /* Looper array og henter label navn fra arrFormElements */
+        $array_column_labels = [];
+        foreach($array_columns_fields as $name) {
+            if(isset($user->arrFormElms[$name])) {
+                $array_column_labels[$name] = $user->arrFormElms[$name][1];
+            }
+        }
+
+        /* Looper listen af brugere og formaterer data */
         foreach ($user->getlist() as $values) {
             $values["options"] = htmltool::linkicon("?mode=edit&id=" . $values["id"], "edit", ["id" => 3]) .
                 htmltool::linkicon("?mode=details&id=" . $values["id"], "eye") .
@@ -36,7 +43,8 @@ switch (strtoupper($mode)) {
             $users[] = $values;
         }
 
-        $p = new listPresenter($columns, $users);
+        /* Kalder listpresenter med labels og brugerliste */
+        $p = new listPresenter($array_column_labels, $users);
         echo $p->presentlist();
 
 
@@ -55,7 +63,7 @@ switch (strtoupper($mode)) {
         ];
         echo textPresenter::presentpanel($strModuleName, "Vis detaljer", $arrButtonPanel);
 
-        /* Kalder user class og henter bruger ud fra id */
+        /* Opretter objektet user ud fra user klassen og henter bruger ud fra id */
         $user = new User();
         $user->getuser($id);
 
@@ -131,8 +139,9 @@ switch (strtoupper($mode)) {
          *
          * Indsæt en option til standardvisning (Vælg bruger) med array_unshift
          * array_unshift($users, "Vælg bruger");
-         * Eksempel på defineret option array
          */
+
+        /* Eksempel på defineret option array */
         $array_gender_options = ["m" => "Mand", "k" => "Kvinde"];
 
         /* Kalder metoden inputSelect med argumenter og assigner output til arrValues */
@@ -152,17 +161,25 @@ switch (strtoupper($mode)) {
          * Otherwise set default value from form elements
          * (Defined in org class)
          */
+
+        /* Opretter objektet user ud fra user klassen */
         $user = new User();
 
+        /* Lopper arrFormElements som fieldname og fieldinfo */
         foreach ($user->arrFormElms as $fieldname => $array_fieldinfo) {
             try {
+                /* Sætter class property hvis den eksisterer i post var */
                 $user->$fieldname = filter_input(INPUT_POST, $fieldname, $array_fieldinfo[3]);
             } catch (Exception $e) {
+                /* Melder fejl */
                 echo "Fejl: " . $e->getMessage();
             }
         }
 
+        /* Gemmer bruger via metoden save() */
         $user->save();
+
+        /* Header tilbage til detailsside */
         header("Location: ?mode=details&id=" . $user->id);
 
         break;
