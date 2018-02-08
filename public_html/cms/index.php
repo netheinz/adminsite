@@ -3,7 +3,7 @@ require_once filter_input(INPUT_SERVER, "DOCUMENT_ROOT") . "/cms/assets/incl/ini
 $mode = isset($_REQUEST["mode"]) && !empty($_REQUEST["mode"]) ? $_REQUEST["mode"] : "";
 $strModuleName = "Dummy test af CMS";
 
-switch(strtoupper($mode)) {
+switch (strtoupper($mode)) {
     default:
     case "LIST":
         include DOCROOT . "/cms/assets/incl/header.php";
@@ -28,9 +28,9 @@ switch(strtoupper($mode)) {
 
 
         foreach ($user->getlist() as $values) {
-            $values["options"] = htmltool::linkicon("?mode=edit&id=".$values["id"], "edit", ["id" => 3]) .
-                                    htmltool::linkicon("?mode=details&id=".$values["id"], "eye") .
-                                    htmltool::linkicon("?mode=delete&id=".$values["id"], "trash-alt");
+            $values["options"] = htmltool::linkicon("?mode=edit&id=" . $values["id"], "edit", ["id" => 3]) .
+                htmltool::linkicon("?mode=details&id=" . $values["id"], "eye") .
+                htmltool::linkicon("?mode=delete&id=" . $values["id"], "trash-alt");
 
             $values["created"] = htmltool::datetime2local($values["created"]);
             $users[] = $values;
@@ -49,7 +49,7 @@ switch(strtoupper($mode)) {
 
         include DOCROOT . "/cms/assets/incl/header.php";
 
-        /* Definerer modul header med titler og navigation */
+        /* Inkluder header og sidepanel med titler og navi */
         $arrButtonPanel = [
             htmltool::linkbutton("Oversigt", "?mode=list")
         ];
@@ -82,19 +82,21 @@ switch(strtoupper($mode)) {
         /* Hent Id fra GET var */
         $id = (int)$_GET["id"];
 
+        /* Opretter objektet user ud fra user klassen */
         $user = new User();
 
         /* Hvis id er større end 0 : rediger ellers opret ny */
-        if($id > 0) {
+        if ($id > 0) {
             $user->getuser($id);
             $strModeName = "Rediger bruger";
         } else {
             $strModeName = "Opret bruger";
         }
 
-        /* Get property values */
+        /* Sætter arrValues med user objektets properties og værdier */
         $arrValues = get_object_vars($user);
 
+        /* Inkluder header og sidepanel med titler og navi */
         include DOCROOT . "/cms/assets/incl/header.php";
 
         /* Definerer modul header med titler og navigation */
@@ -129,22 +131,16 @@ switch(strtoupper($mode)) {
          *
          * Indsæt en option til standardvisning (Vælg bruger) med array_unshift
          * array_unshift($users, "Vælg bruger");
-
          * Eksempel på defineret option array
          */
         $array_gender_options = ["m" => "Mand", "k" => "Kvinde"];
 
-        /**
-         * Kalder metoden inputSelect med argumenter og assigner output til arrValues
-         */
+        /* Kalder metoden inputSelect med argumenter og assigner output til arrValues */
         $arrValues["gender"] = formpresenter::inputSelect("gender", $array_gender_options, $user->gender);
 
-        /**
-         * Kalder form presenter og udskriver formen
-         */
+        /* Kalder form presenter og udskriver formen $$*/
         $p = new formpresenter($user->arrFormElms, $arrValues);
         echo $p->presentForm();
-
 
         include DOCROOT . "/cms/assets/incl/footer.php";
 
@@ -158,10 +154,10 @@ switch(strtoupper($mode)) {
          */
         $user = new User();
 
-        foreach($user->arrFormElms as $fieldname => $array_fieldinfo) {
+        foreach ($user->arrFormElms as $fieldname => $array_fieldinfo) {
             try {
                 $user->$fieldname = filter_input(INPUT_POST, $fieldname, $array_fieldinfo[3]);
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 echo "Fejl: " . $e->getMessage();
             }
         }
