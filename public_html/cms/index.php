@@ -22,16 +22,18 @@ switch (strtoupper($mode)) {
 
         /* Array med felter der skal vises i listen*/
         $array_columns_fields = [
-            "username", "firstname", "lastname", "email", "created"
+            "options", "username", "firstname", "lastname", "email", "created"
         ];
 
         /* Looper array og henter label navn fra arrFormElements */
         $array_column_labels = [];
+        $array_column_labels["options"] = "Options";
         foreach($array_columns_fields as $name) {
             if(isset($user->arrFormElms[$name])) {
                 $array_column_labels[$name] = $user->arrFormElms[$name][1];
             }
         }
+
 
         /* Looper listen af brugere og formaterer data */
         foreach ($user->getlist() as $values) {
@@ -93,22 +95,31 @@ switch (strtoupper($mode)) {
         /* Opretter objektet user ud fra user klassen */
         $user = new User();
 
+
         /* Hvis id er større end 0 : rediger ellers opret ny */
         if ($id > 0) {
             $user->getuser($id);
+            /* Sætter arrValues med user objektets properties og værdier */
+            $arrValues = get_object_vars($user);
+
+            /* Fjerner brugers password fra array */
+            unset($arrValues["password"]);
+            unset($user->arrFormElms["password"]);
+
             $strModeName = "Rediger bruger";
         } else {
+            /* Sætter arrValues med user objektets properties og værdier */
+            $arrValues = get_object_vars($user);
             $strModeName = "Opret bruger";
         }
 
-        /* Sætter arrValues med user objektets properties og værdier */
-        $arrValues = get_object_vars($user);
 
         /* Inkluder header og sidepanel med titler og navi */
         include DOCROOT . "/cms/assets/incl/header.php";
 
         /* Definerer modul header med titler og navigation */
         $arrButtonPanel = [
+            htmltool::linkbutton("Send nyt password", "?mode=sendnewpwd"),
             htmltool::linkbutton("Oversigt", "?mode=list")
         ];
         echo textPresenter::presentpanel($strModuleName, $strModeName, $arrButtonPanel);
@@ -177,10 +188,10 @@ switch (strtoupper($mode)) {
         }
 
         /* Gemmer bruger via metoden save() */
-        $user->save();
+        $id = $user->save();
 
         /* Header tilbage til detailsside */
-        header("Location: ?mode=details&id=" . $user->id);
+        header("Location: ?mode=details&id=" . $id);
 
         break;
 

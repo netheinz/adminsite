@@ -95,7 +95,6 @@ class user {
                 "WHERE id = ? " .
                 "AND deleted = 0";
         if($row = $this->db->_fetch_array($sql, array($this->id))) {
-
             foreach($row[0] as $key => $value) {
                 $this->$key = $value;
             }
@@ -108,92 +107,45 @@ class user {
      */
     public function save() {
         if($this->id) {
-        /* Update scope if user id is true */            
-            
-            $params = array(
-                $this->username,
-                $this->password,
-                $this->firstname,
-                $this->lastname,
-                $this->address,
-                $this->zipcode,
-                $this->city,
-                $this->country,
-                $this->email,
-                $this->phone1,
-                $this->phone2,
-                $this->phone3,
-                $this->created,
-                $this->suspended,
-                $this->id
-            );
-            
-            /* Unset password if empty */
-            if(empty($this->password)) {
-                unset($params[1]);
+
+            $params = [];
+            $fields = [];
+
+            foreach($this->arrFormElms as $name => $array) {
+                if($name === "password") continue;
+                $params[] = $this->$name;
+                $fields[] = $name;
             }
-            
-            /* Build update sql */
-            $sql = "UPDATE user SET " .
-                    "username = ?,";
-            /* Unset password if empty */
-            if(!empty($this->password)) {
-                $sql .= "password = ?, ";
-            }
-            $sql .= "firstname = ?, " .
-                    "lastname = ?, " . 
-                    "address = ?, " . 
-                    "zipcode = ?, " . 
-                    "city = ?, " . 
-                    "country = ?, " . 
-                    "email = ?, " . 
-                    "phone1 = ?, " . 
-                    "phone2 = ?, " . 
-                    "phone3 = ?, " . 
-                    "created = ?, " .
-                    "suspended = ? " . 
-                    "WHERE id = ?";
+
+            array_push($params, $params[0]);
+            array_shift($params);
+            array_shift($fields);
+
+            $sql = "UPDATE user SET " . implode(" = ?, ", $fields) . " = ? " .
+                            "WHERE id = ?";
+
             $this->db->_query($sql, $params);
             
             return $this->id;
             
         } else {
         /* Create scope if user id is false */
-            
-            $params = array(
-                $this->username,
-                $this->password,
-                $this->firstname,
-                $this->lastname,
-                $this->address,
-                $this->zipcode,
-                $this->city,
-                $this->country,
-                $this->email,
-                $this->phone1,
-                $this->phone2,
-                $this->phone3,
-                time(),
-                $this->suspended
-            );
-            
-            $sql = "INSERT INTO user(" . 
-                    "username," .
-                    "password, " . 
-                    "firstname, " . 
-                    "lastname, " . 
-                    "address, " . 
-                    "zipcode, " . 
-                    "city, " . 
-                    "country, " . 
-                    "email, " . 
-                    "phone1, " . 
-                    "phone2, " . 
-                    "phone3, " . 
-                    "created, " .
-                    "suspended) " . 
-                    "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                        
+
+            $params = [];
+            $fields = [];
+            $markers = [];
+
+            $this->created = time();
+            $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+
+            foreach($this->arrFormElms as $name => $array) {
+                $params[] = $this->$name;
+                $fields[] = $name;
+                $markers[] = "?";
+            }
+
+            $sql = "INSERT INTO user(".implode(",", $fields).") " .
+                            "VALUES(".implode(",",$markers).")";
             $this->db->_query($sql, $params);
             
             /* Return new id */

@@ -64,6 +64,10 @@ class formpresenter {
                     $strInputHtml = $this->inputText($name, $this->arrValues[$name], $formelements[2]);
                     $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
                     break;
+                case "PASSWORD":
+                    $strInputHtml = $this->inputPassword($name, $formelements[2]);
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
+                    break;
                 case "EMAIL":
                     $strInputHtml = $this->inputEmail($name, $this->arrValues[$name], $formelements[2]);
                     $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
@@ -135,6 +139,17 @@ class formpresenter {
      */
     public function inputText($name, $value, $required) {
         return "<input type=\"text\" name=\"" . $name . "\" id=\"" . $name . "\" class=\"form-control\" value=\"" . $value . "\" " . $required . ">\n";
+    }
+
+    /**
+     * Metode til input:text
+     * @param $name Feltets navn
+     * @param $value Feltets værdi
+     * @param $required Feltets nødvendighed (required)
+     * @return string Feltet som html
+     */
+    public function inputPassword($name, $required) {
+        return "<input type=\"password\" name=\"" . $name . "\" id=\"" . $name . "\" class=\"form-control\" " . $required . ">\n";
     }
 
     /**
