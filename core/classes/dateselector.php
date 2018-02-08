@@ -8,7 +8,6 @@
  * $dateObj->dateselector([format], [name]);
  * 
  * @property int $stamp Et timestamp
- *
  * @property string $strName Navn på select boksen (Ex: date_start, date_stop, birthday ...)
  * @property string $strFormat Det ønskede datoformat (Ex: day, month, year, hours, minutes)
  * @property string $accHtml String med akkumuleret html

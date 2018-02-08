@@ -79,10 +79,12 @@ switch(strtoupper($mode)) {
         break;
 
     case "EDIT";
+        /* Hent Id fra GET var */
         $id = (int)$_GET["id"];
 
         $user = new User();
 
+        /* Hvis id er større end 0 : rediger ellers opret ny */
         if($id > 0) {
             $user->getuser($id);
             $strModeName = "Rediger bruger";
@@ -149,6 +151,24 @@ switch(strtoupper($mode)) {
         break;
 
     case "SAVE":
+        /*
+         * Loop form elements from org class & set org property if exists
+         * Otherwise set default value from form elements
+         * (Defined in org class)
+         */
+        $user = new User();
+
+        foreach($user->arrFormElms as $fieldname => $array_fieldinfo) {
+            try {
+                $user->$fieldname = filter_input(INPUT_POST, $fieldname, $array_fieldinfo[3]);
+            } catch(Exception $e) {
+                echo "Fejl: " . $e->getMessage();
+            }
+        }
+
+        $user->save();
+        header("Location: ?mode=details&id=" . $user->id);
+
         break;
 
     case "DELETE":

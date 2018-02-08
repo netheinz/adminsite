@@ -30,6 +30,8 @@ class user {
     public $arrValues;
     public $arrGroups;
 
+    protected $db;
+
 
     /**
      * Class Constructor
@@ -105,12 +107,10 @@ class user {
      * @return int id
      */
     public function save() {
-
         if($this->id) {
         /* Update scope if user id is true */            
             
             $params = array(
-                $this->vcImage,
                 $this->username,
                 $this->password,
                 $this->firstname,
@@ -130,18 +130,17 @@ class user {
             
             /* Unset password if empty */
             if(empty($this->password)) {
-                unset($params[2]);
+                unset($params[1]);
             }
             
             /* Build update sql */
-            $sql = "UPDATE user SET " . 
-                    "vcImage = ?," . 
+            $sql = "UPDATE user SET " .
                     "username = ?,";
             /* Unset password if empty */
             if(!empty($this->password)) {
                 $sql .= "password = ?, ";
             }
-            $sql .= "firstname = ?, " . 
+            $sql .= "firstname = ?, " .
                     "lastname = ?, " . 
                     "address = ?, " . 
                     "zipcode = ?, " . 
@@ -154,7 +153,6 @@ class user {
                     "created = ?, " .
                     "suspended = ? " . 
                     "WHERE id = ?";
-            
             $this->db->_query($sql, $params);
             
             return $this->id;
@@ -163,7 +161,6 @@ class user {
         /* Create scope if user id is false */
             
             $params = array(
-                $this->vcImage,
                 $this->username,
                 $this->password,
                 $this->firstname,
@@ -181,8 +178,7 @@ class user {
             );
             
             $sql = "INSERT INTO user(" . 
-                    "vcImage," . 
-                    "username," . 
+                    "username," .
                     "password, " . 
                     "firstname, " . 
                     "lastname, " . 
@@ -196,7 +192,7 @@ class user {
                     "phone3, " . 
                     "created, " .
                     "suspended) " . 
-                    "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; 
+                    "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                         
             $this->db->_query($sql, $params);
             
