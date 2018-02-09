@@ -187,6 +187,9 @@ switch (strtoupper($mode)) {
             }
         }
 
+        /* Konverterer dato selectbokse til timestamp */
+        $user->birthdate = datetool::makeStamp("birthdate");
+
         /* Gemmer bruger via metoden save() */
         $id = $user->save();
 

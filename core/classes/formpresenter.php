@@ -72,6 +72,10 @@ class formpresenter {
                     $strInputHtml = $this->inputEmail($name, $this->arrValues[$name], $formelements[2]);
                     $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
                     break;
+                case "CHECKBOX":
+                    $strInputHtml = $this->inputCheckbox($name, $this->arrValues[$name], $formelements[2]);
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
+                    break;
                 case "SELECT":
                     $strInputHtml = $this->arrValues[$name];
                     $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
@@ -142,9 +146,10 @@ class formpresenter {
     }
 
     /**
-     * Metode til input:text
+     * Metode til input:password
+     * Passwords er hashet i db og har derfor ingen value da det ikke giver mening
+     * at vise det hashede password
      * @param $name Feltets navn
-     * @param $value Feltets værdi
      * @param $required Feltets nødvendighed (required)
      * @return string Feltet som html
      */
@@ -161,6 +166,17 @@ class formpresenter {
      */
     public function inputEmail($name, $value, $required) {
         return "<input type=\"email\" name=\"" . $name . "\" id=\"" . $name . "\" class=\"form-control\" value=\"" . $value . "\" " . $required . ">\n";
+    }
+
+    /**
+     * Metode til input:checkbox
+     * @param $name Feltets navn
+     * @param $value Feltets værdi
+     * @param $required Feltets nødvendighed (required)
+     * @return string Feltet som html
+     */
+    public function inputCheckbox($name, $value, $required) {
+        return "<input type=\"checkbox\" name=\"" . $name . "\" id=\"" . $name . "\" class=\"form-control\" value=\"" . $value . "\" " . $required . ">\n";
     }
 
     /**

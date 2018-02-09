@@ -67,7 +67,7 @@ class user {
                 "birthdate" => ["datetime", "Fødselsdato", TRUE, FILTER_SANITIZE_STRING, ""],
                 "gender" => ["select", "Køn", TRUE, FILTER_SANITIZE_STRING, ""],
                 "created" => ["hidden", "Oprettet", TRUE, FILTER_SANITIZE_STRING, ""],
-                "suspended" => ["checkbox", "Suspenderet", TRUE, FILTER_SANITIZE_STRING, ""]
+                "suspended" => ["checkbox", "Suspenderet", TRUE, FILTER_SANITIZE_STRING, 0]
             ];
 
         $this->arrValues = array();
@@ -75,7 +75,7 @@ class user {
     
     /**
      * Class Method GetList
-     * @return array Returns selected rows as an array
+     * @return array Returner selected rows as an array
      */
     public function getlist() {
         $sql = "SELECT * FROM user " . 
@@ -100,55 +100,66 @@ class user {
             }
         }
     }
-    
+
     /**
      * Class Method Save
      * @return int id
      */
     public function save() {
+
+        /* Sæt array vars for felter og parameter og markers */
+        $params = [];
+        $fields = [];
+        $markers = [];
+
+        /* Update hvis id er større end 0 */
         if($this->id) {
-
-            $params = [];
-            $fields = [];
-
+            /* Loop form elements og byg arrays */
             foreach($this->arrFormElms as $name => $array) {
-                if($name === "password") continue;
                 $params[] = $this->$name;
                 $fields[] = $name;
             }
-
+            /* Flyt index 0 til sidste index på array params */
             array_push($params, $params[0]);
+            /* Fjern index 0 på array params */
             array_shift($params);
+            /* Fjern index 0 på array fields */
             array_shift($fields);
 
+            /* Byg SQL kode til update ud fra array fields */
             $sql = "UPDATE user SET " . implode(" = ?, ", $fields) . " = ? " .
                             "WHERE id = ?";
 
+            /* Eksekver query med array params */
             $this->db->_query($sql, $params);
-            
+
+            /* Returner id */
             return $this->id;
             
         } else {
-        /* Create scope if user id is false */
 
-            $params = [];
-            $fields = [];
-            $markers = [];
-
+            /* Opret - sæt created date til nu */
             $this->created = time();
+            /* Hash password */
             $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+            /* Sikre 0 værdi på suspended */
+            $this->suspended = ($this->suspended) ? $this->suspended : 0;
 
+            /* Loop form elements og byg arrays */
             foreach($this->arrFormElms as $name => $array) {
                 $params[] = $this->$name;
                 $fields[] = $name;
                 $markers[] = "?";
             }
 
-            $sql = "INSERT INTO user(".implode(",", $fields).") " .
+            /* Byg SQL kode til insert ud fra array fields og markers */
+            echo $sql = "INSERT INTO user(".implode(",", $fields).") " .
                             "VALUES(".implode(",",$markers).")";
+            var_dump($params);
+            /* Eksekver query med array params */
             $this->db->_query($sql, $params);
             
-            /* Return new id */
+            /* Returner det nye id */
             return $this->db->_getinsertid();
         }
         
