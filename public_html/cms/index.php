@@ -199,6 +199,58 @@ switch (strtoupper($mode)) {
         break;
 
     case "DELETE":
+        /* Hent Id fra GET var */
+        $id = (int)$_GET["id"];
+
+        /* Opretter objektet user ud fra user klassen */
+        $user = new User();
+        $user->getuser($id);
+
+        /* Inkluder header og sidepanel med titler og navi */
+        include DOCROOT . "/cms/assets/incl/header.php";
+
+        /* Definerer modul header med titler og navigation */
+        $arrButtonPanel = [
+            htmltool::linkbutton("Oversigt", "?mode=list")
+        ];
+        echo textPresenter::presentpanel($strModuleName, "Slet bruger", $arrButtonPanel);
+
+        /* Bed admin om at bekræte sletning */
+        echo "<p>Vil du slette <i>" . $user->firstname . " " . $user->lastname . "</i>?</p>\n";
+
+        /* Sæt arrays til form presenter */
+        $arrFormElements = ["id" => ["hidden", "", 1, FILTER_SANITIZE_NUMBER_INT, ""]];
+        $arrFormValues = ["id" => $id];
+
+        /* Opret objekt fra formpresenter */
+        $f = new formpresenter($arrFormElements, $arrFormValues);
+
+        /* Sæt form action til dodelete */
+        $f->formAction = "dodelete";
+
+        /* Sæt form buttons til ok knap */
+        $f->arrButtons = [
+            htmltool::button("OK")
+        ];
+
+        /* Udskriv formpresenter */
+        echo $f->presentForm();
+
+        include DOCROOT . "/cms/assets/incl/footer.php";
+
+        break;
+    case "DODELETE":
+
+        /* Hent Id fra POST var */
+        $id = (int)$_POST["id"];
+
+        /* Kald user objekt og slet bruger hvis id er større end 0 */
+        if($id > 0) {
+            $user = new User();
+            $user->delete($id);
+        }
+
+        header("Location: ?mode=list");
         break;
 
 }
