@@ -68,6 +68,10 @@ class formpresenter {
                     $strInputHtml = $this->inputPassword($name, $formelements[2]);
                     $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
                     break;
+                case "TEXTAREA":
+                    $strInput = $this->inputTextarea($name, $this->arrValues[$name], $formelements[2]);
+                    $this->accHtml .= $this->setInputGroup($name, $this->arrLabels[$name], $strInput, $formelements[2]);
+                    break;
                 case "EMAIL":
                     $strInputHtml = $this->inputEmail($name, $this->arrValues[$name], $formelements[2]);
                     $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
@@ -146,6 +150,18 @@ class formpresenter {
     }
 
     /**
+     * Metode til textarea
+     * @param $name Feltets navn
+     * @param $value Feltets værdi
+     * @param $required Feltets nødvendighed (required)
+     * @return string Feltet som html
+     */
+    public function inputTextarea($name, $value, $required) {
+        return "<textarea name=\"" . $name . "\" id=\"" . $name . "\" class=\"form-control\" " . $required . ">".$value."</textarea>\n";
+    }
+
+
+    /**
      * Metode til input:password
      * Passwords er hashet i db og har derfor ingen value da det ikke giver mening
      * at vise det hashede password
@@ -176,7 +192,8 @@ class formpresenter {
      * @return string Feltet som html
      */
     public function inputCheckbox($name, $value, $required) {
-        return "<input type=\"checkbox\" name=\"" . $name . "\" id=\"" . $name . "\" class=\"form-control\" value=\"" . $value . "\" " . $required . ">\n";
+        $checked = ($name === $value) ? "checked" : "";
+        return "<input type=\"checkbox\" name=\"" . $name . "\" id=\"" . $name . "\" ".$checked." class=\"form-control\" value=\"" . $value . "\" " . $required . ">\n";
     }
 
     /**

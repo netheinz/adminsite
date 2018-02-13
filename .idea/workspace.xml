@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8b02aefb-45fa-4c3f-99a2-3592c96cd872" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/deployment.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/Adminsite.iml" afterPath="$PROJECT_DIR$/.idea/Adminsite.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/core/classes/dateselector.php" afterPath="$PROJECT_DIR$/core/classes/_dateselector.php" />
-      <change beforePath="$PROJECT_DIR$/core/classes/datetool.php" afterPath="$PROJECT_DIR$/core/classes/datetool.php" />
+      <change beforePath="$PROJECT_DIR$/core/classes/_dateselector.php" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/core/classes/_formpresenter.bak" afterPath="" />
       <change beforePath="$PROJECT_DIR$/core/classes/formpresenter.php" afterPath="$PROJECT_DIR$/core/classes/formpresenter.php" />
-      <change beforePath="$PROJECT_DIR$/core/classes/htmltool.php" afterPath="$PROJECT_DIR$/core/classes/htmltool.php" />
-      <change beforePath="$PROJECT_DIR$/core/classes/user.php" afterPath="$PROJECT_DIR$/core/classes/user.php" />
-      <change beforePath="$PROJECT_DIR$/public_html/cms/index.php" afterPath="$PROJECT_DIR$/public_html/cms/index.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -37,18 +31,8 @@
       <file leaf-file-name="formpresenter.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/classes/formpresenter.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="88" column="42" lean-forward="false" selection-start-line="88" selection-start-column="42" selection-end-line="88" selection-end-column="42" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_dateselector.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/classes/_dateselector.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="458">
-              <caret line="48" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+            <state relative-caret-position="433">
+              <caret line="195" column="7" lean-forward="false" selection-start-line="195" selection-start-column="7" selection-end-line="195" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -115,8 +99,8 @@
         <option value="$PROJECT_DIR$/core/classes/user.php" />
         <option value="$PROJECT_DIR$/core/classes/htmltool.php" />
         <option value="$PROJECT_DIR$/public_html/cms/index.php" />
-        <option value="$PROJECT_DIR$/core/classes/formpresenter.php" />
         <option value="$PROJECT_DIR$/core/classes/datetool.php" />
+        <option value="$PROJECT_DIR$/core/classes/formpresenter.php" />
       </list>
     </option>
   </component>
@@ -228,7 +212,7 @@
       <workItem from="1517998214003" duration="3674000" />
       <workItem from="1518074963341" duration="15965000" />
       <workItem from="1518128097986" duration="11977000" />
-      <workItem from="1518494794075" duration="1184000" />
+      <workItem from="1518494794075" duration="1630000" />
     </task>
     <task id="LOCAL-00001" summary="Updates på adminsite :)">
       <created>1517907616904</created>
@@ -335,18 +319,24 @@
       <option name="project" value="LOCAL" />
       <updated>1518425221495</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Tirsdag morgen:&#10;- Datetool overtager dateselector&#10;- User details opdateret med læsevenlig data">
+      <created>1518496123617</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1518496123617</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="51209000" />
+    <option name="totallyTimeSpent" value="51655000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="7" y="38" width="1420" height="819" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17634253" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17634253" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -379,7 +369,8 @@
     <MESSAGE value="Torsdag morgen updates 3 :)" />
     <MESSAGE value="Fredag morgen updates: user class &amp; module, datetool" />
     <MESSAGE value="Mandag morgen updates: Slet bruger" />
-    <option name="LAST_COMMIT_MESSAGE" value="Mandag morgen updates: Slet bruger" />
+    <MESSAGE value="Tirsdag morgen:&#10;- Datetool overtager dateselector&#10;- User details opdateret med læsevenlig data" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tirsdag morgen:&#10;- Datetool overtager dateselector&#10;- User details opdateret med læsevenlig data" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -524,13 +515,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/classes/_formpresenter.bak">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="677">
-          <caret line="102" column="0" lean-forward="false" selection-start-line="80" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/adminsite_2018-02-02.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -620,22 +604,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/classes/_dateselector.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="458">
-          <caret line="48" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/classes/formpresenter.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="88" column="42" lean-forward="false" selection-start-line="88" selection-start-column="42" selection-end-line="88" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/classes/datetool.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2730">
@@ -652,6 +620,30 @@
             <marker date="1517400526000" expanded="true" signature="4295:4422" ph="INSERT INTO usersession... " />
             <marker date="1517400526000" expanded="true" signature="7330:7380" ph="UPDATE usersession... " />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/classes/_dateselector.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="458">
+          <caret line="48" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/classes/formpresenter.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="433">
+          <caret line="195" column="7" lean-forward="false" selection-start-line="195" selection-start-column="7" selection-end-line="195" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/classes/_formpresenter.bak">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1745">
+          <caret line="0" column="5" lean-forward="true" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>
