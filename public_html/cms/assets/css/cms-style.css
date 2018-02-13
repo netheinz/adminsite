@@ -29,6 +29,10 @@ body {
     background-color: #efefef; 
 }
 
+.navbar a {
+    color: #000;
+}
+
 .mainwrapper { 
     width: 100%; 
     max-width: 960px; 

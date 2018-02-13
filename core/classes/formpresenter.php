@@ -70,7 +70,7 @@ class formpresenter {
                     break;
                 case "TEXTAREA":
                     $strInput = $this->inputTextarea($name, $this->arrValues[$name], $formelements[2]);
-                    $this->accHtml .= $this->setInputGroup($name, $this->arrLabels[$name], $strInput, $formelements[2]);
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInput, $formelements[2]);
                     break;
                 case "EMAIL":
                     $strInputHtml = $this->inputEmail($name, $this->arrValues[$name], $formelements[2]);
