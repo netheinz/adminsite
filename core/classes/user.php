@@ -75,7 +75,7 @@ class user {
     
     /**
      * Class Method GetList
-     * @return array Returner selected rows as an array
+     * @return array Returnerer liste over brugere
      */
     public function getlist() {
         $sql = "SELECT * FROM user " . 
@@ -86,7 +86,7 @@ class user {
     /**
      * Class Method GetUser
      * @param int $id
-     * Selects by id and add values to class properties
+     * Henter en bruger ud fra id og tildeler værdier til class properties
      */
     public function getuser($id) {
         $this->id = $id;
@@ -166,7 +166,7 @@ class user {
     }
     
     /**
-     * Mark user as deleted
+     * Markerer bruger som slettet (Soft Delete)
      * @param int $id
      */
     public function delete($id) {

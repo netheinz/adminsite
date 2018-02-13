@@ -82,23 +82,23 @@ class formpresenter {
                     break;
                 case "DATE":
                     $stamp = ($this->arrValues[$name] > 0) ? $this->arrValues[$name] : time();
-                    $d = new DateSelector($stamp);
+                    $d = new datetool($stamp);
                     $strInput = "<div class=\"form-inline\">";
-                    $strInput .= $d->dateselect("day",$name);
-                    $strInput .= $d->dateselect("month",$name);
-                    $strInput .= $d->dateselect("year",$name);
+                    $strInput .= $d->dateSelect("day",$name);
+                    $strInput .= $d->dateSelect("month",$name);
+                    $strInput .= $d->dateSelect("year",$name);
                     $strInput .= "</div>";
                     $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInput, $formelements[2]);
                     break;
                 case "DATETIME":
                     $stamp = ($this->arrValues[$name] > 0) ? $this->arrValues[$name] : time();
-                    $d = new DateSelector($stamp);
+                    $d = new datetool($stamp);
                     $strInput = "<div class=\"form-inline\">";
-                    $strInput .= $d->dateselect("day",$name);
-                    $strInput .= $d->dateselect("month",$name);
-                    $strInput .= $d->dateselect("year",$name);
-                    $strInput .= $d->dateselect("hours",$name);
-                    $strInput .= $d->dateselect("minutes",$name);
+                    $strInput .= $d->dateSelect("day",$name);
+                    $strInput .= $d->dateSelect("month",$name);
+                    $strInput .= $d->dateSelect("year",$name);
+                    $strInput .= $d->dateSelect("hours",$name);
+                    $strInput .= $d->dateSelect("minutes",$name);
                     $strInput .= "</div>";
                     $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInput, $formelements[2]);
                     break;

@@ -34,14 +34,13 @@ switch (strtoupper($mode)) {
             }
         }
 
-
         /* Looper listen af brugere og formaterer data */
         foreach ($user->getlist() as $values) {
             $values["options"] = htmltool::linkicon("?mode=edit&id=" . $values["id"], "edit", ["id" => 3]) .
                 htmltool::linkicon("?mode=details&id=" . $values["id"], "eye") .
                 htmltool::linkicon("?mode=delete&id=" . $values["id"], "trash-alt");
 
-            $values["created"] = htmltool::datetime2local($values["created"]);
+            $values["created"] = datetool::datetime2local($values["created"]);
             $users[] = $values;
         }
 
@@ -70,7 +69,12 @@ switch (strtoupper($mode)) {
         $user->getuser($id);
 
         /* Konverterer timestamp til læsevenligt format */
-        $user->created = htmltool::datetime2local($user->created);
+        $user->created = datetool::datetime2local($user->created);
+        $user->birthdate = datetool::date2local($user->birthdate);
+
+        /* Sætter øvrige vars til læsevenlige formater */
+        $user->gender = ($user->gender === "f") ? "Kvinde" : "Mand";
+        $user->suspended = ($user->suspended > 0) ? "Ja" : "Nej";
 
         /* Henter class properties med values ud som array */
         $users = get_object_vars($user);

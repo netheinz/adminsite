@@ -5,5 +5,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="ITCN Apache - Web 1" />
+    <orderEntry type="module" module-name="ITCN Apache - Web 2" />
   </component>
 </module>
