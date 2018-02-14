@@ -5,7 +5,7 @@
  *
  * @property string $username Brugernavn fra $_POST var
  * @property string $password Adgangskode fra $_POST var
- * @property int $user_id Bruger Id
+ * @property object $user Bruger Objekt inkl. roller (User Class)
  * @property string $login_html_path Filsti til fil med login form
  * @property string $error_message Variabel til fejl besked
  * @property string $logout Logout Action fra $_GET var
@@ -15,7 +15,7 @@
 class Auth {
     public $username;
     public $password;
-    public $user_id;
+    public $user;
     public $login_html_path;
     public $error_message;
     public $logout;
@@ -60,6 +60,9 @@ class Auth {
          */
         $this->error_message = "";
         $this->timeoutsecs = 3600;
+
+        /* Kalder objekt fra brugerklasse */
+        $this->user = new User();
     }
 
     /**
@@ -80,6 +83,7 @@ class Auth {
             $this->initUser();
         } else {
             if(!$this->getSession()) {
+                echo 11;
                 /**
                  * Ellers kald metode getSession
                  * Vis loginvindue hvis metoden returnerer false
@@ -116,41 +120,33 @@ class Auth {
              * password hash fra user db og tjek om de matcher
              */
             if(password_verify($this->password, $row[0]["password"])) {
+
+                /* Henter bruger på user objekt ud fra user_id */
+                $this->user->getuser($row[0]["id"]);
+
                 /**
                  * Indsæt en record i usersession db hvis password matcher med hash
                  * Sæt params med relevante parametre
                  */
                 $params = array(
                     session_id(),
-                    $row[0]["id"], //User ID
+                    $this->user->id, //User ID
                     self::ISLOGGEDIN,
                     time(), //CURRENT TIME STAMP
                     time() //CURRENT TIME STAMP
                 );
-                /**
-                 * Indsæt row i usersession
-                 */
+
+                /* Indsæt row i usersession */
                 $strInsertSession = "INSERT INTO usersession (id,user_id,isloggedin, created, lastaction) " .
                                     "VALUES(?,?,?,?,?)";
                 $this->db->_query($strInsertSession, $params);
 
-                /**
-                 * Sæt property user_id til user_id fra db user
-                 * Nu er bruger logget ind og vi kan bruge property user_id
-                 * som indikator for login i init.php filen
-                 */
-                $this->user_id = $row[0]["id"];
-
             } else {
-                /**
-                 * Vis login vindue hvis der ikke er et match på password
-                 */
+                /* Vis login vindue hvis der ikke er et match på password */
                 echo $this->loginform(self::ERROR_NOUSERFOUND);
             }
         } else {
-            /**
-             * Vis login vindue hvis der ikke findes en bruger
-             */
+            /* Vis login vindue hvis der ikke findes en bruger */
             echo $this->loginform(self::ERROR_NOUSERFOUND);
         }
 
@@ -162,40 +158,32 @@ class Auth {
      * @return int $user_id Returnerer user_id hvis en session eksisterer
      */
     private function getSession() {
-        /**
-         * Sætter var params med session()
-         */
+
+        /* Sætter var params med session() */
         $params = array(session_id());
 
-        /**
-         * Henter bruger id og lastaction fra usersession ud fra session_id()
-         */
+        /* Henter bruger id og lastaction fra usersession ud fra session_id() */
         $sql = "SELECT user_id, lastaction " .
                 "FROM usersession " .
                 "WHERE id = ? " .
                 "AND isloggedin = 1";
+
         if($row = $this->db->_fetch_array($sql, $params)) {
-            /**
-             * Tjek om tid er udløbet hvis der findes en record
-             */
+
+            /* Tjek om tid er udløbet hvis der findes en record */
             if($row[0]["lastaction"] > (time() - $this->timeoutsecs)) {
 
-                /**
-                 * Kald metode updateSession og sæt property user_id til db user_id
-                 * hvis der findes en row i usersession
-                 */
+                /* Kald metode updateSession og sæt property user_id til db user_id hvis der findes en row i usersession */
                 $this->updateSession();
-                $this->user_id = $row[0]["user_id"];
-                /**
-                 * Returner user_id - kan igen bruges som indikator for
-                 * login i init.php filen
-                 */
-                return $this->user_id;
+
+                /* Henter bruger på user objekt ud fra user_id  og returner true*/
+                $this->user->getuser($row[0]["user_id"]);
+                return true;
+
             } else {
-                /**
-                 * Log bruger ud hvis session tiden er udløbet
-                 */
+                /* Log bruger ud hvis session tiden er udløbet og returner false */
                 $this->logout();
+                return false;
             }
         }
     }
@@ -237,17 +225,12 @@ class Auth {
      * @return mixed|string $strBuffer Streng med fuld html dokument af login vindue
      */
     public function loginform($error_code = 0) {
-        /**
-         * Inkluderer fil i Output Buffer
-         * Derved kan PHP kode i filen parses
-         */
+        /* Inkluderer fil i Output Buffer */
         ob_start();
         include_once $this->login_html_path;
         $strBuffer = ob_get_clean();
 
-        /**
-         * Erstatter fejl kode med fejl besked ved at kalde metoden getErrorMessage()
-         */
+        /* Erstatter fejl kode med fejl besked ved at kalde metoden getErrorMessage() */
         $strErrorMsg = self::getErrorMessage($error_code);
         $strBuffer = str_replace("@ERRORMSG@", $strErrorMsg, $strBuffer);
         return $strBuffer;

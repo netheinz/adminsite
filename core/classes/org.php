@@ -127,7 +127,7 @@ class org {
 
             /* Loop form elements og byg arrays */
             foreach($this->arrFormElms as $name => $array) {
-                $params[] = $this->$name;
+                $params[] = $this->$name; 
                 $fields[] = $name;
                 $markers[] = "?";
             }

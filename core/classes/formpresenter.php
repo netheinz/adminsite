@@ -56,33 +56,37 @@ class formpresenter {
          */
         foreach ($this->arrFormElms as $name => $formelements) {
 
+            $required = ($formelements[2] === TRUE) ? "required" : "";
+
+
             switch (strtoupper($formelements[0])) {
                 case "HIDDEN":
                     $this->accHtml .= $this->inputHidden($name, $this->arrValues[$name]);
                     break;
                 case "TEXT":
-                    $strInputHtml = $this->inputText($name, $this->arrValues[$name], $formelements[2]);
-                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
+                    $strInputHtml = $this->inputText($name, $this->arrValues[$name], $required);
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $required);
                     break;
                 case "PASSWORD":
-                    $strInputHtml = $this->inputPassword($name, $formelements[2]);
-                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
+                    $strInputHtml = $this->inputPassword($name, $required);
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $required);
                     break;
                 case "TEXTAREA":
-                    $strInput = $this->inputTextarea($name, $this->arrValues[$name], $formelements[2]);
-                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInput, $formelements[2]);
+                    $strInput = $this->inputTextarea($name, $this->arrValues[$name], $required);
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInput, $required);
                     break;
                 case "EMAIL":
-                    $strInputHtml = $this->inputEmail($name, $this->arrValues[$name], $formelements[2]);
-                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
+                    $strInputHtml = $this->inputEmail($name, $this->arrValues[$name], $required);
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $required);
                     break;
                 case "CHECKBOX":
-                    $strInputHtml = $this->inputCheckbox($name, $this->arrValues[$name], $formelements[2]);
-                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
+                    $value = isset($this->arrValues[$name]) ? $this->arrValues[$name] : 0;
+                    $strInputHtml = $this->inputCheckbox($name, $value, $required);
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $required);
                     break;
                 case "SELECT":
                     $strInputHtml = $this->arrValues[$name];
-                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $formelements[2]);
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInputHtml, $required);
                     break;
                 case "DATE":
                     $stamp = ($this->arrValues[$name] > 0) ? $this->arrValues[$name] : time();
@@ -92,7 +96,7 @@ class formpresenter {
                     $strInput .= $d->dateSelect("month",$name);
                     $strInput .= $d->dateSelect("year",$name);
                     $strInput .= "</div>";
-                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInput, $formelements[2]);
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInput, $required);
                     break;
                 case "DATETIME":
                     $stamp = ($this->arrValues[$name] > 0) ? $this->arrValues[$name] : time();
@@ -104,7 +108,7 @@ class formpresenter {
                     $strInput .= $d->dateSelect("hours",$name);
                     $strInput .= $d->dateSelect("minutes",$name);
                     $strInput .= "</div>";
-                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInput, $formelements[2]);
+                    $this->accHtml .= $this->setInputGroup($name, $formelements[1], $strInput, $required);
                     break;
 
             }
@@ -192,8 +196,8 @@ class formpresenter {
      * @return string Feltet som html
      */
     public function inputCheckbox($name, $value, $required) {
-        $checked = ($name === $value) ? "checked" : "";
-        return "<input type=\"checkbox\" name=\"" . $name . "\" id=\"" . $name . "\" ".$checked." class=\"form-control\" value=\"" . $value . "\" " . $required . ">\n";
+        $checked = ($value) ? "checked" : "";
+        return "<input type=\"checkbox\" name=\"" . $name . "\" id=\"" . $name . "\" ".$checked." value=\"1\" " . $required . ">\n";
     }
 
     /**

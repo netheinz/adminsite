@@ -19,7 +19,7 @@ $strJs = isset($strJs) && !empty($strJs) ? $strJs : "jquery.min,bootstrap.min,mo
 
     <div class="container-fluid">
         <header>
-            <nav class="navbar bg-primary navbar-light navbar-fixed-top" role="navigation">
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">

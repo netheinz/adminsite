@@ -7,11 +7,12 @@ require_once COREPATH . 'classes/autoload.php';
 /* Classloader - loads class on call from /core/classes/ */
 $db = new dbconf();
 
-
+/* */
 $auth = new Auth();
 $auth->authenticate();
 
-if(!$auth->user_id) {
+/* Tjekker om bruger har admin rettigheder */
+if(!in_array("admin", $auth->user->arrRoles)) {
     echo $auth->loginform(Auth::ERROR_NOACCESS);
     exit();
 }
